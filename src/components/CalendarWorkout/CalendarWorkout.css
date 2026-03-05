@@ -1,0 +1,18 @@
+.training-day {
+  background: #2196F3 !important;
+  color: white !important;
+}
+
+.completed-day {
+  background: #4CAF50 !important;
+  color: white !important;
+}
+
+.missed-day {
+  background: #F44336 !important;
+  color: white !important;
+}
+
+.react-calendar__tile {
+  border-radius: 6px;
+}
