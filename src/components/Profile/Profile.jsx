@@ -4,9 +4,9 @@ import styles from './Profile.module.css';
 const Profile = () => {
   // Datos del cliente - puedes reemplazar con datos de tu base de datos
   const [profile, setProfile] = useState({
-    nombre: 'Juan',
-    apellido: 'García',
-    email: 'juan.garcia@example.com',
+    nombre: 'Adrés',
+    apellido: 'Di Silvio',
+    email: 'tutujr@example.com',
     peso: 75,
     altura: 180,
     objetivos: [

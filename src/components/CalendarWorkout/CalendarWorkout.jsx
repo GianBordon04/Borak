@@ -4,7 +4,7 @@ import "./CalendarWorkout.css"
 
 const WorkoutCalendar = ({ workoutSessions }) => {
 
-  const trainingDays = [0,1,2,3,4,5,6]
+  const trainingDays = [1,3,5]
 
   const getTileClass = ({ date, view }) => {
 
