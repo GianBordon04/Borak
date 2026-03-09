@@ -5,6 +5,13 @@ import clases from "./Hamburger.module.css";
 export default function HamburgerMenu() {
   const [open, setOpen] = useState(false);
 
+  const handleLogout = () => {
+
+    localStorage.removeItem("user")
+    setUser(null)
+
+  }
+
   return (
     <>
       <div
@@ -23,6 +30,11 @@ export default function HamburgerMenu() {
           <Link className={clases.link} to="/seccion/Objetivos">Objetivos</Link>
           <Link className={clases.link} to="/seccion/Perfil">Perfil</Link>
           <Link className={clases.link} to="/seccion/US">Nosotros</Link>
+          <Link className={clases.link} to="/seccion/AdministrarPerfiles">Administrar perfiles</Link>
+
+          <button onClick={handleLogout}>
+            Cerrar sesión
+          </button>
         </ul>
       </div>
     </>
