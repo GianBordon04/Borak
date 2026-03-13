@@ -130,15 +130,27 @@ const AdminClients = ({ user }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredUsers.map(u => (
-                            <tr key={u.id}>
-                                <td>{u.name}</td>
-                                <td>{u.email}</td>
-                                <td>
-                                    <button className={styles.btnAssign}>Ver Progreso</button>
-                                </td>
-                            </tr>
-                        ))}
+                       {/* Cambia esta parte en tu <tbody> */}
+{filteredUsers.map(u => (
+    <tr key={u.id}>
+        <td>{u.name}</td>
+        <td>{u.email}</td>
+        <td>
+            {/* 1. Botón para abrir el constructor con este alumno ya elegido */}
+            <button 
+                className={styles.btnAssign} 
+                onClick={() => {
+                    setTargetClient(u.id); // Selecciona al alumno automáticamente
+                    setShowCreateModal(true); // Abre el modal
+                }}
+            >
+                Asignar Rutina
+            </button>
+            
+            <button className={styles.btnEdit}>Ver Progreso</button>
+        </td>
+    </tr>
+))}
                     </tbody>
                 </table>
             )}
