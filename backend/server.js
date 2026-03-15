@@ -65,24 +65,77 @@ app.post("/register", async (req, res) => {
 /* ================================
    ENDPOINT: OBTENER RUTINA
    ================================ */
-app.get("/routine/:userId", async (req, res) => {
+// app.get("/routine/:userId", async (req, res) => {
+//   try {
+//     const { userId } = req.params;
+//     const result = await pool.query(
+//       `SELECT r.name AS routine_name, e.exercise_name, e.series, e.reps, e.weight_kg 
+//        FROM routines r 
+//        JOIN routine_exercises e ON r.id = e.routine_id 
+//        WHERE r.user_id = $1`, 
+//       [userId]
+//     );
+//     if (result.rows.length === 0) {
+//       return res.status(404).json({ message: "No se encontró rutina" });
+//     }
+//     res.json(result.rows);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send("Error al obtener la rutina");
+//   }
+// });
+
+
+app.get("/progress/:userId", async (req, res) => {
+
+  const { userId } = req.params;
+
   try {
-    const { userId } = req.params;
+
     const result = await pool.query(
-      `SELECT r.name AS routine_name, e.exercise_name, e.series, e.reps, e.weight_kg 
-       FROM routines r 
-       JOIN routine_exercises e ON r.id = e.routine_id 
-       WHERE r.user_id = $1`, 
+      `
+      SELECT 
+        e.exercise_name,
+        e.reps,
+        e.weight_kg
+      FROM routines r
+      JOIN routine_exercises e 
+      ON r.id = e.routine_id
+      WHERE r.user_id = $1
+      `,
       [userId]
     );
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "No se encontró rutina" });
-    }
-    res.json(result.rows);
+
+    const ejerciciosMap = {};
+
+    result.rows.forEach((row) => {
+
+      if (!ejerciciosMap[row.exercise_name]) {
+        ejerciciosMap[row.exercise_name] = {
+          nombre: row.exercise_name,
+          historico: []
+        };
+      }
+
+      ejerciciosMap[row.exercise_name].historico.push({
+        semana: `Semana ${ejerciciosMap[row.exercise_name].historico.length + 1}`,
+        peso: row.weight_kg,
+        repeticiones: row.reps
+      });
+
+    });
+
+    const ejercicios = Object.values(ejerciciosMap);
+
+    res.json(ejercicios);
+
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Error al obtener la rutina");
+
+    console.error("Error obteniendo progreso:", error);
+    res.status(500).json({ error: "Error del servidor" });
+
   }
+
 });
 
 /* ================================
@@ -144,6 +197,7 @@ app.post("/assign-routine", async (req, res) => {
   }
 
 });
+
 
 // SIEMPRE AL FINAL: Iniciar servidor
 app.listen(3000, () => {
