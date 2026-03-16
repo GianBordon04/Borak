@@ -3,6 +3,8 @@ import workoutSessions from "../../data/workoutSessions.json";
 import WorkoutCalendar from "../CalendarWorkout/CalendarWorkout";
 import styles from "./Rutine.module.css";
 
+
+
 const Rutine = ({ user }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [exerciseLogs, setExerciseLogs] = useState({});
@@ -47,6 +49,8 @@ const Rutine = ({ user }) => {
 
   // Nombre de la rutina (tomado del primer ejercicio que devuelve el JOIN)
   const routineName = routineData[0]?.routine_name || "Mi Rutina";
+
+  
 
   return (
     <>
@@ -95,5 +99,30 @@ const Rutine = ({ user }) => {
     </>
   );
 };
+// --- DENTRO DE Rutine.jsx ---
+useEffect(() => {
+  const fetchRoutine = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/routine/${user.id}`);
+      
+      // Manejo de la respuesta según el estado
+      if (response.status === 404) {
+        setRoutineData([]); // El usuario existe pero no tiene rutina asignada
+      } else if (response.ok) {
+        const data = await response.json();
+        setRoutineData(data);
+      } else {
+        console.error("Error en la respuesta del servidor");
+      }
+
+    } catch (error) {
+      console.error("Error al traer la rutina:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (user?.id) fetchRoutine();
+}, [user]);
 
 export default Rutine;

@@ -1,43 +1,43 @@
 import { useState, useEffect } from 'react';
 import styles from './DailyRutine.module.css';
 
-const DailyRutine = () => {
-    // Datos de ejemplo de rutinas por día. Reemplaza con datos reales o props.
-    const rutinas = [
-        {
-            dia: 'lunes',
-            ejercicios: [
-                { id: 1, nombre: 'Push-ups', series: 3, reps: 10 },
-                { id: 2, nombre: 'Squats', series: 4, reps: 12 },
-            ]
-        },
-        {
-            dia: 'martes',
-            ejercicios: [
-                { id: 3, nombre: 'Planks', series: 3, reps: 30 }, // reps en segundos para planks
-                { id: 4, nombre: 'Lunges', series: 3, reps: 10 },
-            ]
-        },
-        // Agrega más días según sea necesario
-    ];
-
+const DailyRutine = ({ user }) => {
     const [diaActual, setDiaActual] = useState('');
-    const [rutinaDelDia, setRutinaDelDia] = useState(null);
+    const [rutinaDelDia, setRutinaDelDia] = useState([]);
     const [progreso, setProgreso] = useState({});
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const hoy = new Date().toLocaleDateString('es-ES', { weekday: 'long' }).toLowerCase();
+        // Establecer el día actual en español
+        const hoy = new Date().toLocaleDateString('es-ES', { weekday: 'long' });
         setDiaActual(hoy);
-        const rutina = rutinas.find(r => r.dia === hoy);
-        setRutinaDelDia(rutina);
-        if (rutina) {
-            const initialProgreso = {};
-            rutina.ejercicios.forEach(ej => {
-                initialProgreso[ej.id] = { series: '', reps: '', peso: '' };
-            });
-            setProgreso(initialProgreso);
-        }
-    }, []);
+
+        const fetchRutinaReal = async () => {
+            try {
+                // Llamamos a tu endpoint personalizado
+                const response = await fetch(`http://localhost:3000/routine/${user.id}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    setRutinaDelDia(data);
+                    
+                    // Inicializamos el estado del progreso basándonos en los ejercicios reales
+                    const initialProgreso = {};
+                    data.forEach((ej, index) => {
+                        // Usamos index o un id único de la DB
+                        initialProgreso[index] = { series: '', reps: '', peso: '' };
+                    });
+                    setProgreso(initialProgreso);
+                }
+            } catch (error) {
+                console.error("Error cargando rutina diaria:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (user?.id) fetchRutinaReal();
+    }, [user]);
 
     const handleChange = (id, field, value) => {
         setProgreso(prev => ({
@@ -46,49 +46,58 @@ const DailyRutine = () => {
         }));
     };
 
-    if (!rutinaDelDia) {
-        return <p>No hay rutina programada para hoy ({diaActual}).</p>;
+    if (loading) return <p>Cargando entrenamiento de hoy...</p>;
+
+    if (rutinaDelDia.length === 0) {
+        return <p className={styles.noRutina}>No hay rutina programada para hoy ({diaActual}).</p>;
     }
 
     return (
         <div className={styles.container}>
             <h1>Rutina del Día: {diaActual.charAt(0).toUpperCase() + diaActual.slice(1)}</h1>
+            <p className={styles.routineSubtitle}>Enfoque: {rutinaDelDia[0]?.routine_name}</p>
+            
             <div className={styles.ejercicios}>
-                {rutinaDelDia.ejercicios.map(ej => (
-                    <div key={ej.id} className={styles.ejercicio}>
-                        <h3>{ej.nombre}</h3>
-                        <p>Series sugeridas: {ej.series}</p>
-                        <p>Reps sugeridas: {ej.reps}</p>
+                {rutinaDelDia.map((ej, index) => (
+                    <div key={index} className={styles.ejercicio}>
+                        <h3>{ej.exercise_name}</h3>
+                        <div className={styles.sugerido}>
+                            <span>Sugerido: {ej.series} series x {ej.reps} reps ({ej.weight_kg}kg)</span>
+                        </div>
+                        
                         <div className={styles.inputs}>
                             <label>
-                                Series realizadas:
+                                Series:
                                 <input
                                     type="number"
-                                    value={progreso[ej.id]?.series || ''}
-                                    onChange={(e) => handleChange(ej.id, 'series', e.target.value)}
+                                    placeholder="0"
+                                    value={progreso[index]?.series || ''}
+                                    onChange={(e) => handleChange(index, 'series', e.target.value)}
                                 />
                             </label>
                             <label>
-                                Reps realizadas:
+                                Reps:
                                 <input
                                     type="number"
-                                    value={progreso[ej.id]?.reps || ''}
-                                    onChange={(e) => handleChange(ej.id, 'reps', e.target.value)}
+                                    placeholder="0"
+                                    value={progreso[index]?.reps || ''}
+                                    onChange={(e) => handleChange(index, 'reps', e.target.value)}
                                 />
                             </label>
                             <label>
-                                Peso (kg):
+                                Peso:
                                 <input
                                     type="number"
-                                    value={progreso[ej.id]?.peso || ''}
-                                    onChange={(e) => handleChange(ej.id, 'peso', e.target.value)}
+                                    placeholder="kg"
+                                    value={progreso[index]?.peso || ''}
+                                    onChange={(e) => handleChange(index, 'peso', e.target.value)}
                                 />
                             </label>
                         </div>
                     </div>
                 ))}
             </div>
-            <button className={styles.guardar}>Guardar Progreso</button>
+            <button className={styles.guardar}>Finalizar y Guardar Entrenamiento</button>
         </div>
     );
 };

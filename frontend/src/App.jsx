@@ -47,7 +47,7 @@ function App() {
         
         <Route path="/seccion/Objetivos" element={<Objetives />} />
         
-        <Route path="/seccion/Progresos" element={<Progress />} />
+        <Route path='/seccion/Progresos' element={<Progress user={user} />} />
         
         <Route path="/seccion/Perfil" element={<Profile user={user} />} />
         
