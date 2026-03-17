@@ -93,11 +93,12 @@ const AdminClients = ({ user }) => {
             });
 
             if (response.ok) {
-                alert("¡Rutina guardada en la base de datos con éxito!");
-                setShowCreateModal(false);
-                setRoutineExercises([]);
-                setNewRutineName("");
-            }
+    alert("¡Rutina guardada en la base de datos con éxito!");
+    setShowCreateModal(false);
+    setRoutineExercises([]);
+    setNewRutineName("");
+    setTargetClient(""); // <--- Agregue esto
+}
         } catch (error) {
             console.error("Error al guardar:", error);
             alert("Error al conectar con el servidor.");
