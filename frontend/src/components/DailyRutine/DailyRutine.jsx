@@ -51,26 +51,28 @@ const DailyRutine = ({ user }) => {
     const handleGuardar = async () => {
         setSaving(true);
         setSaveMessage('');
+    
 
-        const exercises = rutinaDelDia.map((ej, index) => ({
-            exercise_name: ej.exercise_name,
-            series: parseInt(progreso[index]?.series || ej.series, 10),
-            reps: parseInt(progreso[index]?.reps || ej.reps, 10),
-            weight_kg: parseFloat(progreso[index]?.peso || ej.weight_kg)
-        }));
+        const exercises = rutinaDelDia.map((ej, index) => {
+    const p = progreso[index];
+    return {
+        exercise_name: ej.exercise_name,
+        // Si el input está vacío, usamos el valor sugerido (ej.series)
+        series: p?.series !== '' ? parseInt(p.series, 10) : ej.series,
+        reps: p?.reps !== '' ? parseInt(p.reps, 10) : ej.reps,
+        weight_kg: p?.peso !== '' ? parseFloat(p.peso) : ej.weight_kg
+    };
+});
 
-        try {
-            const res = await fetch('http://localhost:3000/routine-completed', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    userId: user.id,
-                    routineName: rutinaDelDia[0]?.routine_name || 'Rutina del día',
-                    exercises
-                })
-            });
+       try {
+        const res = await fetch('http://localhost:3000/routine-completed', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: user.id,
+                exercises: exercises // El array con exercise_name, series, reps, weight_kg
+            })
+        });
 
             if (!res.ok) {
                 throw new Error('No se pudo guardar la rutina');
