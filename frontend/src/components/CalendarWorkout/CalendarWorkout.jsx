@@ -27,8 +27,6 @@ const WorkoutCalendar = ({ routineDays = [], workoutSessions = [], onDateClick }
     return "rest-day";
   };
 
-  console.log("Routine days:", routineDays)
-
   return (
     <div className="calendar-container">
       <Calendar 
