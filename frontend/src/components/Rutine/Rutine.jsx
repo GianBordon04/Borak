@@ -127,57 +127,43 @@ const Rutine = ({ user }) => {
     <div className={styles.rutina}>
       <h2>{routineName}</h2>
 
-      <div className={styles.layout}>
+      <WorkoutCalendar
+        routineDays={routineData}
+        workoutSessions={workoutSessions}
+        onDateClick={(date) => setSelectedDate(date)}
+      />
 
-        {/* 🗓 CALENDARIO */}
-        <div className={`${styles.calendario} ${styles.card}`}>
-          <WorkoutCalendar
-            routineDays={routineData}
-            workoutSessions={workoutSessions}
-            onDateClick={(date) => setSelectedDate(date)}
-          />
-        </div>
+      <div style={{ marginTop: "40px" }}>
+        <h2>Rutina del día: {selectedDate.toLocaleDateString()}</h2>
+        <div className={styles.ejercicios}>
+          {dailyRoutine ? (
+            <div className={styles.diaContainer}>
+              <h3>{dailyRoutine.name}</h3>
+              {dailyRoutine.exercises.map((ex, index) => (
+                <div key={index} className={styles.ejercicio}>
+                  <h4>{ex.name}</h4>
+                  <p>Objetivo: {ex.series} series x {ex.reps} reps ({ex.weight}kg)</p>
 
-        {/* 💪 ENTRENAMIENTO DEL DÍA */}
-        <div className={`${styles.entrenamientoDelDia} ${styles.card}`}>
-          <h2>Rutina del día: {selectedDate.toLocaleDateString()}</h2>
-
-          <div className={styles.ejercicios}>
-            {dailyRoutine ? (
-              <div className={styles.diaContainer}>
-                <h3>{dailyRoutine.name}</h3>
-
-                {dailyRoutine.exercises.map((ex, index) => (
-                  <div key={index} className={styles.ejercicio}>
-
-                    <div className={styles.ejercicioInfo}>
-                      <h4>{ex.name}</h4>
-                      <p>Objetivo: {ex.series} x {ex.reps} ({ex.weight}kg)</p>
-                    </div>
-
-                    <div className={styles.SetRepsContainer}>
-                      {Array.from({ length: ex.series }).map((_, serieIndex) => (
-                        <div key={serieIndex} className={styles.ejercicioDiv}>
-                          <input
-                            type="number"
-                            placeholder="Reps"
-                            className={styles.input}
-                            onChange={(e) =>
-                              handleInputChange(ex.name, serieIndex, "reps", e.target.value)
-                            }
-                          />
-                          <input
-                            type="number"
-                            placeholder="Kg"
-                            className={styles.input}
-                            // readOnly={user.role !== "pf" && user.role !== "admin"}
-                            // value={exerciseLogs[ex.name]?.[serieIndex]?.weight ?? ex.weight}
-                            onChange={(e) =>
-                              handleInputChange(ex.name, serieIndex, "weight_kg", e.target.value)
-                            }
-                          />
-                        </div>
-                      ))}
+                  {Array.from({ length: ex.series }).map((_, serieIndex) => (
+                    <div key={serieIndex} className={styles.setRow}>
+                      <span>Set {serieIndex + 1}:</span>
+                      <input
+  type="number"
+  placeholder="Reps"
+  // ❌ sacar: style={{ width: '60px' }}
+  onChange={(e) => handleInputChange(ex.name, serieIndex, "reps", e.target.value)}
+/>
+<input
+  type="number"
+  placeholder="Kg"
+  style={{ 
+    // ❌ sacar width: '60px'
+    backgroundColor: user.role !== 'pf' && user.role !== 'admin' ? '#e9e9e9' : 'white'
+  }}
+  readOnly={user.role !== 'pf' && user.role !== 'admin'}
+  value={exerciseLogs[ex.name]?.[serieIndex]?.weight ?? ex.weight}
+  onChange={(e) => handleInputChange(ex.name, serieIndex, "weight", e.target.value)}
+/>
                     </div>
 
                   </div>

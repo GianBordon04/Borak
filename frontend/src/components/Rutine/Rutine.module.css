@@ -44,70 +44,75 @@
     gap: 15px;
 }
 
+.diaContainer {
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
 .ejercicio {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 15px;
-    gap: 20px;
-}
-
-.ejercicioInfo {
-    min-width: 150px;
-}
-
-/* INPUTS */
-.SetRepsContainer {
-    display: flex;
     flex-direction: column;
-    gap: 6px;
-}
-
-.ejercicioDiv {
-    display: flex;
-    gap: 8px;
-}
-
-.input {
-    width: 60px;
-    padding: 5px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
-
-/* BOTÓN */
-.saveButton {
-    margin-top: 20px;
-    padding: 12px;
-    width: 100%;
-    background: #4CAF50;
-    border: none;
+    padding: 1rem;
+    border: 1px solid #eee;
     border-radius: 8px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
+    gap: 0.5rem;
 }
 
-/* MINI RUTINA */
-.ejercicioMini {
+.ejercicio h4 {
+    margin: 0;
+}
+
+.descanso {
+    text-align: center;
+    padding: 2rem;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+}
+
+/* Inputs de sets — mobile primero */
+.setRow {
     display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    font-size: 14px;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 5px;
 }
 
-/* 📱 RESPONSIVE */
-@media (max-width: 900px) {
-    .layout {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "calendar"
-            "training"
-            "full";
+.setRow input {
+    width: 70px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Tablet y desktop */
+@media (min-width: 600px) {
+    .ejercicio {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-wrap: wrap;
     }
 
-    .ejercicio {
-        flex-direction: column;
-        align-items: flex-start;
+    .ejercicio h4 {
+        flex: 1 1 100%;
+    }
+
+    .setRow input {
+        width: 80px;
+    }
+}
+
+@media (min-width: 900px) {
+    .ejercicios {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .diaContainer {
+        padding: 1.5rem;
     }
 }
