@@ -10,6 +10,7 @@ import Objetives from './components/Objetives/Objetives';
 import Profile from './components/Profile/Profile';
 import Us from './components/Us/Us';
 import AdminClients from './components/AdminClients/AdminClients';
+import Ranking from './components/Ranking/Ranking';
 import Auth from './components/Auth/Auth';
 
 function App() {
@@ -41,7 +42,8 @@ function App() {
         <Route path="/seccion/Rutina" element={<Rutine user={user} />} />
         <Route path="/seccion/Objetivos" element={<Objetives user={user} />} />        
         <Route path='/seccion/Progresos' element={<Progress user={user} />} />        
-        <Route path="/seccion/Perfil" element={<Profile user={user} />} />        
+        <Route path="/seccion/Perfil" element={<Profile user={user} />} />    
+        <Route path="/seccion/Ranking" element={<Ranking user={user} />} />
         <Route path="/seccion/Us" element={<Us />} />
         <Route
           path="/seccion/AdministrarPerfiles"

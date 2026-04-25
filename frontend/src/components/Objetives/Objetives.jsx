@@ -68,14 +68,14 @@ const Objetives = ({ user }) => {
               yAxisId="left"
               type="monotone"
               dataKey="repeticiones"
-              stroke="#8884d8"
+              stroke="#82ca9d"
               name="Reps"
             />
             <Line
               yAxisId="right"
               type="monotone"
               dataKey="peso"
-              stroke="#82ca9d"
+              stroke="#8884d8"
               name="Peso (kg)"
             />
           </LineChart>

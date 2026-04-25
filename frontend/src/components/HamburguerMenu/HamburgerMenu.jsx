@@ -24,6 +24,7 @@ export default function HamburgerMenu({ user, logout, isAdmin }) {
           <li><Link className={clases.link} to="/seccion/Progresos">Progresos</Link></li>
           <li><Link className={clases.link} to="/seccion/Objetivos">Objetivos</Link></li>
           <li><Link className={clases.link} to="/seccion/Perfil">Perfil</Link></li>
+          <li><Link className={clases.link} to="/seccion/Ranking">Ranking</Link></li>
           <li><Link className={clases.link} to="/seccion/US">Nosotros</Link></li>
 
           {isAdmin && (

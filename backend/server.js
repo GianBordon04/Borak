@@ -343,7 +343,7 @@ app.get("/profile/:userId", async (req, res) => {
 ================================ */
 app.post("/routine-completed", async (req, res) => {
   // 1. Recibimos 'date' desde el body
-  const { userId, exercises, date } = req.body; 
+  const { userId, exercises, date } = req.body;
 
   try {
     const queries = exercises.map((ex) => {
@@ -357,50 +357,69 @@ app.post("/routine-completed", async (req, res) => {
 
     await Promise.all(queries);
     res.status(200).json({ message: "¡Progreso guardado!" });
-    
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "No se pudo guardar" });
   }
 });
 
-
-
 // ENDPOINT PARA LEER (Lo que pedirá Objetives.jsx o Progress.jsx)
 app.get('/progress/:userId', async (req, res) => {
   const { userId } = req.params;
   try {
     const result = await pool.query(
-      'SELECT exercise_name, reps_done, weight_kg, date_completed FROM workout_logs WHERE user_id = $1 ORDER BY date_completed ASC',
+      `SELECT exercise_name, reps_done, weight_kg, date_completed 
+       FROM workout_logs 
+       WHERE user_id = $1 
+       ORDER BY date_completed ASC`,
       [userId]
     );
 
-    // Agrupamos los datos por nombre de ejercicio
     const ejerciciosMap = {};
 
     result.rows.forEach((log) => {
       const nombre = log.exercise_name;
+      const fecha = new Date(log.date_completed).toLocaleDateString();
 
       if (!ejerciciosMap[nombre]) {
-        ejerciciosMap[nombre] = {
-          nombre: nombre,
-          historico: []
-        };
+        ejerciciosMap[nombre] = { nombre, historico: [], sesionesCrudas: {} };
       }
 
-      ejerciciosMap[nombre].historico.push({
-        semana: new Date(log.date_completed).toLocaleDateString(), // Usamos la fecha como etiqueta
-        peso: log.weight_kg,
-        repeticiones: log.reps_done
+      // Para el gráfico (agrupado por fecha, peso máximo)
+      const hist = ejerciciosMap[nombre].historico;
+      const existing = hist.find(h => h.semana === fecha);
+      if (!existing) {
+        hist.push({ semana: fecha, peso: Number(log.weight_kg), repeticiones: Number(log.reps_done) });
+      } else if (Number(log.weight_kg) > existing.peso) {
+        existing.peso = Number(log.weight_kg);
+        existing.repeticiones = Number(log.reps_done);
+      }
+
+      // Para el detalle del último día (todas las series)
+      if (!ejerciciosMap[nombre].sesionesCrudas[fecha]) {
+        ejerciciosMap[nombre].sesionesCrudas[fecha] = [];
+      }
+      ejerciciosMap[nombre].sesionesCrudas[fecha].push({
+        peso: Number(log.weight_kg),
+        repeticiones: Number(log.reps_done)
       });
     });
 
-    res.json(Object.values(ejerciciosMap));
+    // Adjuntamos las series del último día a cada ejercicio
+    const respuesta = Object.values(ejerciciosMap).map(ej => ({
+      nombre: ej.nombre,
+      historico: ej.historico,
+      sesionesCrudas: ej.sesionesCrudas   // <-- mandamos todo el objeto
+    }));
+
+    res.json(respuesta);
   } catch (err) {
     console.error(err);
     res.status(500).send("Error al obtener progresos");
   }
 });
+
 
 /* ================================
 UPDATE PROFILE 🔥
@@ -475,29 +494,29 @@ app.put("/profile/:userId", async (req, res) => {
 });
 
 app.post('/update-status', async (req, res) => {
-    const { userId, status } = req.body; // status será 'approved' o 'rejected'
+  const { userId, status } = req.body; // status será 'approved' o 'rejected'
 
-    try {
-        // Validación básica
-        if (!['approved', 'rejected'].includes(status)) {
-            return res.status(400).json({ error: 'Estado no válido' });
-        }
-
-        // Ejecutamos el UPDATE en Neon
-        const result = await pool.query(
-            'UPDATE users SET status = $1 WHERE id = $2 RETURNING *',
-            [status, userId]
-        );
-
-        if (result.rowCount === 0) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-
-        res.json({ message: `Usuario ${status} correctamente`, user: result.rows[0] });
-    } catch (error) {
-        console.error('Error en Neon:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+  try {
+    // Validación básica
+    if (!['approved', 'rejected'].includes(status)) {
+      return res.status(400).json({ error: 'Estado no válido' });
     }
+
+    // Ejecutamos el UPDATE en Neon
+    const result = await pool.query(
+      'UPDATE users SET status = $1 WHERE id = $2 RETURNING *',
+      [status, userId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.json({ message: `Usuario ${status} correctamente`, user: result.rows[0] });
+  } catch (error) {
+    console.error('Error en Neon:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
 });
 
 /* ================================
@@ -510,7 +529,7 @@ const verificarEstructura = async () => {
       ALTER TABLE users 
       ADD COLUMN IF NOT EXISTS status VARCHAR(20) DEFAULT 'approved'
     `);
-    
+
     // 2. Crear columna created_at en routines si no existe
     await pool.query(`
       ALTER TABLE routines 
@@ -524,6 +543,26 @@ const verificarEstructura = async () => {
 };
 
 verificarEstructura();
+
+/* ================================
+   RANKING
+================================ */
+app.get("/ranking", async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT u.id, u.name, COUNT(DISTINCT DATE(wl.date_completed)) AS entrenamientos
+       FROM users u
+       LEFT JOIN workout_logs wl ON wl.user_id = u.id
+       WHERE u.role = 'user'
+       GROUP BY u.id, u.name
+       ORDER BY entrenamientos DESC`
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al obtener ranking" });
+  }
+});
 
 /* ================================
    SERVER
