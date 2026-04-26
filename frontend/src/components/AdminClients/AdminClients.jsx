@@ -282,9 +282,9 @@ const AdminClients = ({ user }) => {
         <div className={styles.adminContainer}>
             <div className={styles.header}>
                 <h1>Panel Profe: {user.name}</h1>
-                <button className={styles.btnCreate} onClick={() => setShowCreateModal(true)}>
+                {/* <button className={styles.btnCreate} onClick={() => setShowCreateModal(true)}>
                     + Crear Rutina Personalizada
-                </button>
+                </button> */}
             </div>
             {/* --- SECCIÓN 1: USUARIOS PENDIENTES --- */}
             {pendingUsers.length > 0 && (
@@ -326,7 +326,7 @@ const AdminClients = ({ user }) => {
         <tbody>
             {activeUsers.length > 0 ? (
                 activeUsers.map((u) => (
-                    <tr key={u.id}>
+                    <tr key={u.id} className={styles.clientRow}>
                         <td data-label="Nombre">{u.name}</td>
                         <td data-label="Email">{u.email}</td>
                         <td data-label="Rutina">{u.current_routine || "Sin rutina"}</td>

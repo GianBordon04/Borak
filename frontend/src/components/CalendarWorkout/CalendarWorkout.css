@@ -28,7 +28,7 @@
 
 /* Día que el profe asignó rutina */
 .training-day {
-  background-color: #67a4d9 !important; /* Amarillo suave o el color de tu app */
+  background-color: #83bdf1 !important;
   border-radius: 50%;
   color: #000;
   font-weight: bold;
@@ -50,8 +50,6 @@
 .react-calendar {
   border: none !important;
   font-family: Arial, Helvetica, sans-serif;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  border-radius: 8px;
 }
 
 .completedDay {

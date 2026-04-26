@@ -1,65 +1,72 @@
 /* CONTENEDOR PRINCIPAL */
 .rutina {
-  width: 95%;
-  margin: auto;
-  margin-top: 20px;
+    /* width: 95%; */
+    margin: auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 .rutina h1 {
-  text-align: center;
-  color: #333;
-  font-size: 2.5rem;
-  margin-bottom: 0;
+    text-align: center;
+    margin-bottom: 0;
 }
 
 /* GRID PRINCIPAL */
 .layout {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  grid-template-areas:
-    "calendar training"
-    "full full";
-  gap: 24px;
-  margin-top: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    grid-template-areas:
+        "calendar training"
+        "full full";
+    gap: 24px;
+    margin-top: 24px;
 }
 
-.calendario  { grid-area: calendar; }
-.entrenamientoDelDia { grid-area: training; }
-.rutinaCompleta { grid-area: full; }
+.calendario {
+    grid-area: calendar;
+}
+
+.entrenamientoDelDia {
+    grid-area: training;
+}
+
+.rutinaCompleta {
+    grid-area: full;
+}
 
 /* CARDS */
 .card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .card h2 {
-  margin: 0 0 1.25rem 0;
-  font-size: 1.3rem;
-  color: #333;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #667eea;
+    margin: 0 0 1.25rem 0;
+    font-size: 1.3rem;
+    color: #333;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #667eea;
 }
 
 .card h3 {
-  font-size: 1rem;
-  color: #667eea;
-  margin: 0 0 0.5rem 0;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+    font-size: 1rem;
+    color: #667eea;
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* EJERCICIOS */
 .ejercicios {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.ejercicioContainer{
+.ejercicioContainer {
     display: flex;
     flex-direction: column;
     gap: 3px;
@@ -79,136 +86,136 @@
 
 /* INPUTS */
 .SetRepsContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .ejercicioDiv {
-  display: flex;
-  gap: 8px;
+    display: flex;
+    gap: 8px;
 }
 
 .input {
-  width: 64px;
-  padding: 6px 8px;
-  border-radius: 6px;
-  border: 1.5px solid #ddd;
-  font-size: 0.9rem;
-  color: #333;
-  text-align: center;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 64px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1.5px solid #ddd;
+    font-size: 0.9rem;
+    color: #333;
+    text-align: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .input:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
 }
 
 /* BOTÓN GUARDAR */
 .saveButton {
-  margin-top: 1.25rem;
-  padding: 0.85rem;
-  width: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-size: 0.95rem;
-  font-weight: 700;
-  cursor: pointer;
-  letter-spacing: 0.3px;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
+    margin-top: 1.25rem;
+    padding: 0.85rem;
+    width: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
 }
 
 .saveButton:hover:not(:disabled) {
-  opacity: 0.9;
-  transform: translateY(-1px);
+    opacity: 0.9;
+    transform: translateY(-1px);
 }
 
 .saveButton:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 /* RUTINA COMPLETA — mini cards */
 .ejercicioMini {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.6rem 0.85rem;
-  border-radius: 8px;
-  background: #f8f9fa;
-  border: 1px solid #e0e0e0;
-  font-size: 0.85rem;
-  color: #444;
-  transition: border-color 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0.85rem;
+    border-radius: 8px;
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    font-size: 0.85rem;
+    color: #444;
+    transition: border-color 0.2s ease;
 }
 
 .ejercicioMini:hover {
-  border-color: #667eea;
+    border-color: #667eea;
 }
 
 .ejercicioMini span:last-child {
-  font-weight: 600;
-  color: #667eea;
+    font-weight: 600;
+    color: #667eea;
 }
 
 /* DÍA DE DESCANSO */
 .card div h3 {
-  color: #888;
-  font-size: 1.1rem;
-  text-transform: none;
-  letter-spacing: 0;
+    color: #888;
+    font-size: 1.1rem;
+    text-transform: none;
+    letter-spacing: 0;
 }
 
 .card div p {
-  color: #aaa;
-  font-size: 0.9rem;
-  margin: 0;
+    color: #aaa;
+    font-size: 0.9rem;
+    margin: 0;
 }
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "calendar"
-      "training"
-      "full";
-  }
+    .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "calendar"
+            "training"
+            "full";
+    }
 
-  .rutina h1 {
-    font-size: 1.8rem;
-  }
+    .rutina h1 {
+        font-size: 1.8rem;
+    }
 
-  .ejercicio {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+    .ejercicio {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-  .SetRepsContainer {
-    width: 100%;
-  }
+    .SetRepsContainer {
+        width: 100%;
+    }
 
-  .ejercicioDiv {
-    width: 100%;
-  }
+    .ejercicioDiv {
+        width: 100%;
+    }
 
-  .input {
-    flex: 1;
-    width: auto;
-  }
+    .input {
+        flex: 1;
+        width: auto;
+    }
 }
 
 @media (max-width: 480px) {
-  .card {
-    padding: 1rem;
-  }
+    .card {
+        padding: 1rem;
+    }
 
-  .saveButton {
-    font-size: 0.9rem;
-  }
+    .saveButton {
+        font-size: 0.9rem;
+    }
 }

@@ -3,10 +3,9 @@
    ===================== */
 
 .adminContainer {
-    padding: 1rem;
-    padding-top: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+    margin: auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 .header {
@@ -86,7 +85,9 @@
     font-size: 0.85rem;
 }
 
-.btnApprove:hover { background-color: #218838; }
+.btnApprove:hover {
+    background-color: #218838;
+}
 
 .btnReject {
     padding: 0.4rem 0.9rem;
@@ -98,7 +99,9 @@
     font-size: 0.85rem;
 }
 
-.btnReject:hover { background-color: #c82333; }
+.btnReject:hover {
+    background-color: #c82333;
+}
 
 /* =====================
    BUSCADOR
@@ -121,7 +124,7 @@
    TABLA — responsive con data-label
    ===================== */
 
-.clientsTable {
+.clientsTable{
     width: 100%;
     border-collapse: collapse;
 }
@@ -164,6 +167,10 @@
     flex-shrink: 0;
 }
 
+.clientRow {
+    border-bottom: 1px solid #f0f0f0;
+}
+
 .btnAssign {
     padding: 0.4rem 0.8rem;
     background-color: #007bff;
@@ -174,7 +181,9 @@
     font-size: 0.8rem;
 }
 
-.btnAssign:hover { background-color: #0056b3; }
+.btnAssign:hover {
+    background-color: #0056b3;
+}
 
 .btnEdit {
     padding: 0.4rem 0.8rem;
@@ -186,7 +195,9 @@
     font-size: 0.8rem;
 }
 
-.btnEdit:hover { background-color: #e8600a; }
+.btnEdit:hover {
+    background-color: #e8600a;
+}
 
 /* =====================
    MODALES
@@ -304,7 +315,9 @@
     align-self: flex-start;
 }
 
-.btnAddExercise:hover { background-color: #138496; }
+.btnAddExercise:hover {
+    background-color: #138496;
+}
 
 .btnRemove {
     padding: 0.4rem 0.7rem;
@@ -316,7 +329,9 @@
     font-size: 0.85rem;
 }
 
-.btnRemove:hover { background-color: #c82333; }
+.btnRemove:hover {
+    background-color: #c82333;
+}
 
 .modalActions {
     display: flex;
@@ -334,7 +349,9 @@
     cursor: pointer;
 }
 
-.btnCancel:hover { background-color: #5a6268; }
+.btnCancel:hover {
+    background-color: #5a6268;
+}
 
 .btnSave {
     padding: 0.6rem 1.2rem;
@@ -345,7 +362,9 @@
     cursor: pointer;
 }
 
-.btnSave:hover { background-color: #218838; }
+.btnSave:hover {
+    background-color: #218838;
+}
 
 .errorMsg {
     color: red;
@@ -399,6 +418,7 @@
         display: table-row;
         border: none;
         border-radius: 0;
+        border-bottom: 1px solid #eee;
         padding: 0;
         margin: 0;
     }
@@ -406,7 +426,6 @@
     .clientsTable td {
         display: table-cell;
         padding: 0.75rem 1rem;
-        border-bottom: 1px solid #eee;
         font-size: 0.95rem;
     }
 
@@ -418,7 +437,6 @@
         padding: 0.75rem 1rem;
         background-color: #f8f9fa;
         text-align: left;
-        border-bottom: 2px solid #dee2e6;
         font-size: 0.95rem;
     }
 
@@ -429,5 +447,92 @@
     .clientsTable td:last-child {
         display: table-cell;
         justify-content: unset;
+    }
+}
+
+/* =====================
+   TABLA: CELDA DE ACCIONES
+   ===================== */
+
+.clientsTable td:last-child {
+    display: flex;
+    /* Los pone uno al lado del otro */
+    gap: 0.75rem;
+    /* Espaciado entre botones */
+    justify-content: center;
+    /* Los centra en la celda */
+    align-items: center;
+    min-width: 280px;
+    /* Evita que se amontonen en pantallas medianas */
+}
+
+/* =====================
+   BOTONES CON ESTILO "RÉCORD"
+   ===================== */
+
+/* Botón Asignar (Color 1: Índigo Progreso) */
+.btnAssign {
+    flex: 1;
+    /* Hace que ambos midan lo mismo */
+    padding: 0.6rem 1rem;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(102, 126, 234, 0.2);
+    white-space: nowrap;
+    /* Evita que el texto se parta en dos líneas */
+}
+
+.btnAssign:hover {
+    background: #5a6fd6;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Botón Modificar (Color 2: Violeta Mejor Serie) */
+.btnEdit {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    background: #764ba2;
+    /* Tono violeta de "Personal Best" */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(118, 75, 162, 0.2);
+    white-space: nowrap;
+}
+
+.btnEdit:hover {
+    background: #663d91;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(118, 75, 162, 0.3);
+}
+
+/* =====================
+   AJUSTE MOBILE (Opcional)
+   ===================== */
+@media (max-width: 600px) {
+    .clientsTable td:last-child {
+        flex-direction: row;
+        /* Mantiene el uno al lado del otro en mobile */
+        justify-content: space-between;
+        min-width: unset;
+        width: 100%;
+    }
+
+    .btnAssign,
+    .btnEdit {
+        font-size: 0.75rem;
+        /* Achica un poco el texto para que entre bien */
+        padding: 0.5rem;
     }
 }
